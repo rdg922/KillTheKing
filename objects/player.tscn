@@ -72,7 +72,7 @@ position = Vector2( 0, -6 )
 z_as_relative = false
 frames = SubResource( 21 )
 animation = "idle"
-frame = 2
+frame = 1
 speed_scale = 1.5
 playing = true
 
