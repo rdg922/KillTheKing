@@ -19,7 +19,8 @@ var pullSpeedMax = 1200;
 var pullSpeed = pullSpeedBase;
 var pullAcc = 200;
 
-export var timeout : float = 3
+export var timeoutReset : float = 3
+var timeout = timeoutReset;
 
 onready var offset = global_position;
 
@@ -42,14 +43,15 @@ func _physics_process(delta):
 		"shoot":
 			shoot(delta)
 			found_player = false
+			timeout -= delta
 		"hit":
 			returnHookshot(delta)
 			pass
 	
 	if(timeout <= 0):
 		return_arrow()
-	else:
-		timeout -= delta
+		timeout = timeoutReset
+	
 	
 	playerRaycast.look_at(player.global_position)
 	pass
