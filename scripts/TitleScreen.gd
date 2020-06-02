@@ -21,7 +21,6 @@ func _on_Server_button_up():
 
 
 func _on_Client_button_up():
-	get_tree().change_scene("res://levels/floating.tscn")
 	Network.join_server()
 	
 	pass # Replace with function body.

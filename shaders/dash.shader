@@ -20,7 +20,7 @@ void fragment() {
     float brightness = length(col);
     col = mix(col, u_replacement_color.rgb * brightness, step(m, u_tolerance));
     // Assign final color for the pixel, and preserve transparency
-	COLOR = vec4(col.rgb, (original_color.a));
+	COLOR = vec4(col.rgb, (original_color.a) * 0.5);
 	
 	
 }

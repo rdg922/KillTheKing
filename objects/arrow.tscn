@@ -3,7 +3,8 @@
 [ext_resource path="res://materials/anti-jitter.tres" type="Material" id=1]
 [ext_resource path="res://assets/Kyrise's 16x16 RPG Icon Pack - V1.3/icons/16x16/arrow_01e.png" type="Texture" id=2]
 [ext_resource path="res://assets/magnet.png" type="Texture" id=3]
-[ext_resource path="res://scripts/arrow.gd" type="Script" id=4]
+[ext_resource path="res://weapon_scripts/arrow.gd" type="Script" id=4]
+
 
 
 [sub_resource type="RectangleShape2D" id=1]

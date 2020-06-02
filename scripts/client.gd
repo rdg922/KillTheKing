@@ -40,7 +40,7 @@ const knockback_reset := .2;
 const speed_when_hit := 100;
 var knockback_timer := 0.0;
 
-const fall_reset := .5;
+const fall_reset := 1;
 var fall_timer := 0.0;
 
 var health := 25;
@@ -346,6 +346,7 @@ sync func set_hand(hand: int) -> void:
 		
 
 func put_in_void() -> void:
+	print(state)
 	if(state == "roll" || state == "hookshot"):
 		return
 	else:
@@ -378,8 +379,6 @@ func check_void():
 	for body in bodies:
 		if body.is_in_group("void"):
 			put_in_void()
-			print("putting in void")
-			print(state)
 
 sync func damage(damage := 1, knockback := Vector2()) -> void:
 	knockback_timer = knockback_reset
