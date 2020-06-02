@@ -1,0 +1,74 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://materials/anti-jitter.tres" type="Material" id=1]
+[ext_resource path="res://assets/Kyrise's 16x16 RPG Icon Pack - V1.3/icons/16x16/arrow_01e.png" type="Texture" id=2]
+[ext_resource path="res://assets/magnet.png" type="Texture" id=3]
+[ext_resource path="res://scripts/arrow.gd" type="Script" id=4]
+
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 7, 3 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 9, 5 )
+
+[sub_resource type="Animation" id=3]
+length = 0.2
+loop = true
+step = 0.05
+tracks/0/type = "value"
+tracks/0/path = NodePath("../../Head:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.15, 0.2 ),
+"transitions": PoolRealArray( 1, 1, 1 ),
+"update": 0,
+"values": [ Vector2( 0, 0 ), Vector2( -4, 0 ), Vector2( 0, 0 ) ]
+}
+
+[node name="Gun" type="KinematicBody2D" groups=[
+"arrow",
+]]
+collision_layer = 8
+collision_mask = 4
+script = ExtResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 1 )
+
+[node name="Head" type="Sprite" parent="."]
+material = ExtResource( 1 )
+rotation = 2.35619
+z_index = -2
+texture = ExtResource( 2 )
+
+[node name="PlayerCheck" type="RayCast2D" parent="."]
+enabled = true
+cast_to = Vector2( 10000, 0 )
+
+[node name="Sprite" type="Sprite" parent="PlayerCheck"]
+material = ExtResource( 1 )
+position = Vector2( 8, 0 )
+scale = Vector2( 0.5, 0.5 )
+z_index = 2
+texture = ExtResource( 3 )
+offset = Vector2( 8, 0 )
+
+[node name="Collision" type="Area2D" parent="."]
+gravity_vec = Vector2( 0, 0 )
+collision_layer = 2
+collision_mask = 4
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Collision"]
+shape = SubResource( 2 )
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+root_node = NodePath("../PlayerCheck/Sprite")
+method_call_mode = 1
+anims/shoot = SubResource( 3 )
+
+[node name="VisibilityNotifier2D" type="VisibilityNotifier2D" parent="."]
+rect = Rect2( -7, -3, 14, 6 )

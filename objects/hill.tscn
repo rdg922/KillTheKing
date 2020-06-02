@@ -1,0 +1,26 @@
+[gd_scene load_steps=7 format=2]
+
+[ext_resource path="res://shaders/bloom_shader.shader" type="Shader" id=1]
+[ext_resource path="res://assets/bullet.png" type="Texture" id=2]
+[ext_resource path="res://scripts/hill.gd" type="Script" id=3]
+[ext_resource path="res://assets/hill.png" type="Texture" id=4]
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = ExtResource( 1 )
+shader_param/bloom_color = Color( 1, 0, 0, 1 )
+shader_param/emission_texture = ExtResource( 2 )
+
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 16, 16 )
+
+[node name="Hill" type="Area2D"]
+material = SubResource( 3 )
+script = ExtResource( 3 )
+
+[node name="Sprite" type="Sprite" parent="."]
+modulate = Color( 1, 1, 1, 0.25098 )
+texture = ExtResource( 4 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+visible = false
+shape = SubResource( 2 )

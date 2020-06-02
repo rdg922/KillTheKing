@@ -1,0 +1,87 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://scripts/healthbar.gd" type="Script" id=1]
+[ext_resource path="res://assets/healthbar-background.png" type="Texture" id=2]
+[ext_resource path="res://assets/healthbar-over.png" type="Texture" id=3]
+[ext_resource path="res://assets/healthbar-progress.png" type="Texture" id=4]
+[ext_resource path="res://materials/anti-jitter.tres" type="Material" id=5]
+[ext_resource path="res://assets/hearts32x32.png" type="Texture" id=6]
+[ext_resource path="res://assets/m5x7.ttf" type="DynamicFontData" id=7]
+
+
+[sub_resource type="RectangleShape2D" id=1]
+extents = Vector2( 62.8326, 15.635 )
+
+[sub_resource type="AtlasTexture" id=2]
+atlas = ExtResource( 6 )
+region = Rect2( 0, 0, 32, 32 )
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ SubResource( 2 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+} ]
+
+[sub_resource type="DynamicFont" id=4]
+size = 32
+font_data = ExtResource( 7 )
+
+[node name="Healthbar" type="Node2D"]
+script = ExtResource( 1 )
+
+[node name="Area2D" type="Area2D" parent="."]
+collision_layer = 2
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area2D"]
+position = Vector2( 64.0268, 7.54455 )
+shape = SubResource( 1 )
+
+[node name="Tween" type="Tween" parent="."]
+
+[node name="Backgroundbar" type="TextureProgress" parent="."]
+margin_top = -8.0
+margin_right = 128.0
+margin_bottom = 24.0
+value = 100.0
+texture_under = ExtResource( 2 )
+texture_over = ExtResource( 3 )
+texture_progress = ExtResource( 4 )
+nine_patch_stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Healthbar" type="TextureProgress" parent="."]
+margin_top = -8.0
+margin_right = 128.0
+margin_bottom = 24.0
+value = 100.0
+texture_over = ExtResource( 3 )
+texture_progress = ExtResource( 4 )
+tint_progress = Color( 1, 0.0941176, 0, 1 )
+nine_patch_stretch = true
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+material = ExtResource( 5 )
+position = Vector2( 0, 8 )
+scale = Vector2( 2, 2 )
+frames = SubResource( 3 )
+playing = true
+
+[node name="Label" type="Label" parent="."]
+margin_left = 1.13527
+margin_top = -8.0
+margin_right = 128.135
+margin_bottom = 24.0
+custom_fonts/font = SubResource( 4 )
+text = "100"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}

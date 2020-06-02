@@ -1,0 +1,18 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "shader_type canvas_item;
+
+// Which color you want to change
+uniform vec4 u_color_key : hint_color;
+// Which color to replace it with
+uniform vec4 u_replacement_color : hint_color;
+// How much tolerance for the replacement color (between 0 and 1)
+uniform float u_tolerance;
+
+void fragment() {
+    // Get color from the sprite texture at the current pixel we are rendering
+	vec4 original_color = texture(TEXTURE, UV);
+	
+    COLOR = vec4(1,1,1,original_color.a);
+}"

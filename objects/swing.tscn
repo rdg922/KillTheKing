@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scripts/swing.gd" type="Script" id=1]
+[ext_resource path="res://assets/sword.tres" type="SpriteFrames" id=2]
+
+[node name="Swing" type="Area2D"]
+position = Vector2( 2, 0 )
+script = ExtResource( 1 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 60, 0 )
+scale = Vector2( 3, 3 )
+frames = ExtResource( 2 )
+playing = true
+
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
+position = Vector2( 60, 0 )
+scale = Vector2( 3, 3 )
+polygon = PoolVector2Array( -20.7541, -7.71625, -20.6685, 8.17644, -2.21075, 8.01299, -0.0486908, 7.0567, 3.75189, 3.28742, 3.5487, -3.2825, 0.0344658, -7.07985, -2.08602, -8.16088 )
+[connection signal="animation_finished" from="AnimatedSprite" to="." method="_on_AnimatedSprite_animation_finished"]
