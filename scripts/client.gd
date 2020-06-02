@@ -168,7 +168,8 @@ func _process(delta) -> void:
 				dir = Vector2(xdir, ydir)
 				dir = dir.normalized()
 				
-				move_and_slide(dir * speed_when_hit) #Player can move
+				if(!is_dummy):
+					move_and_slide(dir * speed_when_hit) #Player can move
 				
 				if(knockback_timer <= 0):
 					state = "move"
@@ -177,7 +178,7 @@ func _process(delta) -> void:
 				can_shoot()
 				can_switch()
 				update_valid_position()
-				enable_void_collision()
+#				enable_void_collision()
 				
 			("fell"):
 				
@@ -278,18 +279,18 @@ func move(dir: Vector2, delta: float, decrease := 0) -> void:
 
 func can_shoot() -> void:
 	
-	if(is_dummy or current_hand == 0):
+	if(is_dummy):
 		return
 	
 	var gun = inventory[current_hand];
 	
 	if(Input.is_action_just_pressed("left_click") || (Input.is_action_pressed("left_click") and gun.automatic == true)):
-		if(not gun.get_node("Collision").get_overlapping_bodies()):
+		if(gun.type == "sword" or (not gun.get_node("Collision").get_overlapping_bodies() and gun.type == "gun") ):
 			gun.rpc("init_shoot");
 
 
 func handle_hand() -> void:
-	if(is_dummy or current_hand == 0):
+	if(is_dummy):
 		return
 	
 	hand_rot = TAU/2 + atan2(global_position.y - get_global_mouse_position().y, global_position.x - get_global_mouse_position().x)
@@ -297,8 +298,7 @@ func handle_hand() -> void:
 	
 	var weapon = inventory[current_hand]
 	
-	if(weapon.type == "gun"):
-		inventory_node.rotation = hand_rot
+	inventory_node.rotation = hand_rot
 
 	for weapon in inventory:
 		
@@ -336,7 +336,9 @@ func can_switch() -> void:
 	elif(Input.is_action_just_pressed("inv_3")):
 		current_hand = 2
 		rpc("set_hand", current_hand)
-	
+	elif(Input.is_action_just_pressed("inv_4")):
+		current_hand = 3
+		rpc("set_hand", current_hand)
 sync func set_hand(hand: int) -> void:
 	for gun in inventory:
 		if(gun == inventory[hand]):
@@ -384,10 +386,11 @@ sync func damage(damage := 1, knockback := Vector2()) -> void:
 	knockback_timer = knockback_reset
 	state = "hit"
 	sprite.material = singleton.state_materials["hit"]
+	knockback_dir = knockback;
 #	rpc("change_health", -damage)
 	return
 
-func disable_void_collision() -> void:
+sync func disable_void_collision() -> void:
 	set_collision_mask_bit(10, false)
 	return
 

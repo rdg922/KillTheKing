@@ -1,8 +1,7 @@
-[gd_scene load_steps=21 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://scripts/client.gd" type="Script" id=1]
 [ext_resource path="res://scripts/Camera2D.gd" type="Script" id=2]
-[ext_resource path="res://objects/empty_item_slot.tscn" type="PackedScene" id=5]
 [ext_resource path="res://objects/shotgun.tscn" type="PackedScene" id=6]
 [ext_resource path="res://objects/pistol.tscn" type="PackedScene" id=7]
 [ext_resource path="res://objects/hookshot.tscn" type="PackedScene" id=8]
@@ -19,29 +18,29 @@
 
 [sub_resource type="ShaderMaterial" id=1]
 
-[sub_resource type="SpriteFrames" id=21]
+[sub_resource type="SpriteFrames" id=2]
 animations = [ {
 "frames": [ ExtResource( 12 ), ExtResource( 11 ), ExtResource( 13 ), ExtResource( 16 ) ],
 "loop": true,
 "name": "idle",
 "speed": 7.0
 }, {
-"frames": [ ExtResource( 10 ), ExtResource( 15 ), ExtResource( 14 ), ExtResource( 17 ) ],
-"loop": true,
-"name": "run",
-"speed": 7.0
-}, {
 "frames": [ ExtResource( 17 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 10 ) ],
 "loop": true,
 "name": "run_backwards",
 "speed": 7.0
+}, {
+"frames": [ ExtResource( 10 ), ExtResource( 15 ), ExtResource( 14 ), ExtResource( 17 ) ],
+"loop": true,
+"name": "run",
+"speed": 7.0
 } ]
 
-[sub_resource type="CapsuleShape2D" id=23]
+[sub_resource type="CapsuleShape2D" id=3]
 radius = 5.76744
 height = 4.18605
 
-[sub_resource type="CircleShape2D" id=22]
+[sub_resource type="CircleShape2D" id=4]
 radius = 1.09543
 
 [node name="Player" type="KinematicBody2D" groups=[
@@ -70,25 +69,21 @@ script = ExtResource( 2 )
 material = SubResource( 1 )
 position = Vector2( 0, -6 )
 z_as_relative = false
-frames = SubResource( 21 )
+frames = SubResource( 2 )
 animation = "idle"
-frame = 3
+frame = 1
 speed_scale = 1.5
 playing = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2( 0, 1.16199 )
-shape = SubResource( 23 )
+shape = SubResource( 3 )
 
 [node name="Inventory" type="Node2D" parent="." groups=[
 "inventory",
 ]]
 
-[node name="Empty" parent="Inventory" instance=ExtResource( 5 )]
-visible = false
-
 [node name="Shotgun" parent="Inventory" instance=ExtResource( 6 )]
-visible = false
 position = Vector2( 15, -4.61383e-07 )
 rotation = -4.46638e-06
 
@@ -116,4 +111,4 @@ collision_mask = 1025
 
 [node name="CollisionShape" type="CollisionShape2D" parent="Area2D"]
 position = Vector2( 0, 4 )
-shape = SubResource( 22 )
+shape = SubResource( 4 )
