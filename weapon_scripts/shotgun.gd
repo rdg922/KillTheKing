@@ -6,13 +6,10 @@ var automatic = false;
 var type = "gun"
 
 
-onready var bullet : Resource = preload("res://objects/bullet.tscn")
+onready var bullet : Resource = singleton.bullet;
 onready var spawnPoint : Position2D = $Position2D
-onready var singleton = get_node("/root/singleton")
 
 var will_shoot = false
-
-
 
 export var bulletLife : float = .15;
 
@@ -21,24 +18,15 @@ export var bulletOffsetAngle : float = 20
 func _process(delta):
 	
 	if(will_shoot && $AnimationPlayer.current_animation != "shoot"):
-		var bulletInst : Area2D = bullet.instance()
-		get_tree().get_root().get_node("Level").add_child(bulletInst)
-		bulletInst.global_position = get_spawn_point()
-		bulletInst.global_rotation = global_rotation - deg2rad(bulletOffsetAngle)
-		bulletInst.life = bulletLife
 		
-		bulletInst = bullet.instance()
-		get_tree().get_root().get_node("Level").add_child(bulletInst)
-		bulletInst.global_position = get_spawn_point()
-		bulletInst.global_rotation = global_rotation + deg2rad(bulletOffsetAngle)
-		bulletInst.life = bulletLife
-		
-		bulletInst = bullet.instance()
-		get_tree().get_root().get_node("Level").add_child(bulletInst)
-		bulletInst.global_position = get_spawn_point()
-		bulletInst.global_rotation = global_rotation
-		bulletInst.life = bulletLife
-		
+		#3 bullets shot with varying angles
+		for i in range(-1, 2):
+			var bulletInst : Area2D = bullet.instance()
+			get_tree().get_root().get_node("Level").add_child(bulletInst)
+			bulletInst.global_position = get_spawn_point()
+			bulletInst.global_rotation = global_rotation - (i * deg2rad(bulletOffsetAngle)) # Offset from -angle, 0, +angle 
+			bulletInst.life = bulletLife
+			
 		will_shoot = false
 	
 	pass # Replace with function body.

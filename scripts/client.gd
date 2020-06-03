@@ -2,11 +2,7 @@ extends KinematicBody2D
 
 const SPEED := 200;
 
-var speed := 0.0;
-
-const acceleration := 1000;
-const maxSpeed := 220;
-const deAcc := 1600;
+var speed := 180
 var state = "move";
 
 
@@ -88,37 +84,38 @@ func _process(delta) -> void:
 					dir = Vector2()
 				
 				move(dir, delta)
-								
-				if(Input.is_action_just_pressed("roll") and not is_dummy):
-					state="roll"
-					rollTimer = rollTime;
-					rollSpeed = rollSpeedBase;
-
-#					rpc("set_material", dash_material)
+				
+				#Roll Disabled
+#				if(Input.is_action_just_pressed("roll") and not is_dummy):
+#					state="roll"
+#					rollTimer = rollTime;
+#					rollSpeed = rollSpeedBase;
+#
+##					rpc("set_material", dash_material)
 
 				can_switch()
 				can_shoot()
 				update_valid_position()
 				enable_void_collision()
-				
-			("roll"):
-				
-				rollSpeed -= rollSpeedDeacc * delta
-				if(rollSpeed < SPEED): rollSpeed = SPEED
-				
-				var weight = get_current_weight(current_hand)
-					
-				move_and_slide(dir * rollSpeed); #Weight independent
-				
-				
-				
-				if(rollTimer <= 0):
-					state="post_roll"
-#					rpc("set_material", post_roll_material)
-					rollWaitTimer = rollWait
-				
-				rollTimer -= delta
-				disable_void_collision()
+			#Roll Disabled
+#			("roll"):
+#
+#				rollSpeed -= rollSpeedDeacc * delta
+#				if(rollSpeed < SPEED): rollSpeed = SPEED
+#
+#				var weight = get_current_weight(current_hand)
+#
+#				move_and_slide(dir * rollSpeed); #Weight independent
+#
+#
+#
+#				if(rollTimer <= 0):
+#					state="post_roll"
+##					rpc("set_material", post_roll_material)
+#					rollWaitTimer = rollWait
+#
+#				rollTimer -= delta
+#				disable_void_collision()
 				
 				
 				
@@ -129,33 +126,33 @@ func _process(delta) -> void:
 				can_switch()
 				disable_void_collision()
 			
-			
-			("post_roll"):
-				rollWaitTimer -= delta
-				
-				var xdir = int(Input.is_action_pressed('right')) - int(Input.is_action_pressed("left"))
-				var ydir = int(Input.is_action_pressed('down')) - int(Input.is_action_pressed("up"))
-				
-				dir = Vector2(xdir, ydir)
-				dir = dir.normalized()
-				
-				var weight = get_current_weight(current_hand)
-				
-				move_and_slide(dir * (SPEED - weight) * 0.5)
-				sprite.speed_scale = 1
-				
-				if(rollWaitTimer <= 0):
-					state="move"
-					sprite.speed_scale = 2
-#					rpc("set_material", regular_material)
-				
-				sprite.scale.x = -sprite_scale.x * sign(global_position.x - get_global_mouse_position().x)
-				
-				can_switch()
-				can_shoot()
-				update_valid_position()
-				enable_void_collision()
-			
+			#Roll Disabled
+#			("post_roll"):
+#				rollWaitTimer -= delta
+#
+#				var xdir = int(Input.is_action_pressed('right')) - int(Input.is_action_pressed("left"))
+#				var ydir = int(Input.is_action_pressed('down')) - int(Input.is_action_pressed("up"))
+#
+#				dir = Vector2(xdir, ydir)
+#				dir = dir.normalized()
+#
+#				var weight = get_current_weight(current_hand)
+#
+#				move_and_slide(dir * (SPEED - weight) * 0.5)
+#				sprite.speed_scale = 1
+#
+#				if(rollWaitTimer <= 0):
+#					state="move"
+#					sprite.speed_scale = 2
+##					rpc("set_material", regular_material)
+#
+#				sprite.scale.x = -sprite_scale.x * sign(global_position.x - get_global_mouse_position().x)
+#
+#				can_switch()
+#				can_shoot()
+#				update_valid_position()
+#				enable_void_collision()
+#
 			("hit"):
 				move_and_slide(knockback_dir * knockback_speed)
 				
@@ -238,10 +235,14 @@ func _process(delta) -> void:
 sync func change_health(amount) -> void:
 	health += amount
 	$Healthbar.health = health 
+	if(health <= 0):
+		rpc("set_health", 25)
 
 sync func set_health(amount) -> void:
 	$Healthbar.health = amount
 	health = amount
+	if(health <= 0):
+		rpc("set_health", 25)
 
 sync func set_material(mat) -> void:
 	$AnimatedSprite.material = load(mat);
@@ -260,21 +261,18 @@ func move(dir: Vector2, delta: float, decrease := 0) -> void:
 			sprite.animation = "run"
 			rset_unreliable("slave_animation", "run")
 		
-		speed = speed + acceleration * delta
 	else:
 		sprite.animation = "idle"
 		rset_unreliable("slave_animation", "idle")
-		speed -= deAcc * delta
 		
 		
 	if(speed < 0):
 		speed = 0;
-	if(speed > maxSpeed):
-		speed = maxSpeed
 	
 #	print(speed)
 	sprite.scale.x = -sprite_scale.x * sign(global_position.x - get_global_mouse_position().x)	
 	move_and_slide(dir * max(0, (speed - weight)) )
+#	print(weight)
 	
 
 func can_shoot() -> void:
@@ -348,14 +346,14 @@ sync func set_hand(hand: int) -> void:
 		
 
 func put_in_void() -> void:
-	print(state)
+#	print(state)
 	if(state == "roll" || state == "hookshot"):
 		return
 	else:
 		state="fell"
 		fall_timer = fall_reset
 		position = last_valid_position
-		damage()
+		rpc("damage", 1)
 		pass
 
 func update_valid_position() -> void:
@@ -387,7 +385,7 @@ sync func damage(damage := 1, knockback := Vector2()) -> void:
 	state = "hit"
 	sprite.material = singleton.state_materials["hit"]
 	knockback_dir = knockback;
-#	rpc("change_health", -damage)
+	rpc("change_health", -damage)
 	return
 
 sync func disable_void_collision() -> void:

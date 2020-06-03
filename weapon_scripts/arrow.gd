@@ -93,7 +93,7 @@ func returnHookshot(delta):
 		player.state="hookshot"
 		found_player = true;
 		
-		if( (player.global_position - global_position).length() < 6):
+		if( (player.global_position - global_position).length() < 8):
 			
 			pullSpeed = pullSpeedBase;
 			

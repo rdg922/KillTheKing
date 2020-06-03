@@ -27,7 +27,7 @@ config/icon="res://icon.png"
 
 [autoload]
 
-singleton="*res://scripts/autoload.gd"
+singleton="*res://scripts/singleton.gd"
 Network="*res://scripts/network.gd"
 
 [debug]

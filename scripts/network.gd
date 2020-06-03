@@ -77,7 +77,7 @@ func create_server():
 	
 	var peer := WebSocketServer.new()
 	peer.listen(SERVER_PORT, PoolStringArray(), true);
-	peer.set_bind_ip("192.168.86.41")
+	peer.set_bind_ip(SERVER_IP)
 	get_tree().set_network_peer(peer)
 	print(IP.resolve_hostname("localhost"))
 	
@@ -85,9 +85,11 @@ func create_server():
 	networking_peer = peer
 	pass
 
-func join_server():
+func join_server(ip : String, port:= null):
 	var peer = WebSocketClient.new()
-	var url = "ws://192.168.86.41:" + str(SERVER_PORT)
+	var url = "ws://" + ip
+	if(port != null):
+		url + ':' + str(port)
 	var error = peer.connect_to_url(url, PoolStringArray(), true);
 	get_tree().set_network_peer(peer)
 	

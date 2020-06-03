@@ -4,7 +4,7 @@ const player_path = "res://objects/player.tscn";
 #var state_materials = {move = preload("res://scripts/regularShaderMat.tres"), roll = preload("res://scripts/dashShaderMat.tres"), post_roll = preload("res://scripts/postRollShaderMat.tres"), hit = preload("res://scripts/hitShaderMat.tres")}
 var state_materials = {};
 
-
+onready var bullet = preload("res://weapons/bullet.tscn")
 
 onready var levels = {"test": preload("res://levels/test.tscn")}; 
 var camera;

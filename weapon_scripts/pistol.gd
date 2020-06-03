@@ -2,9 +2,9 @@ extends Node2D
 
 export var weight : float = 0;
 
-onready var bullet : Resource = preload("res://objects/bullet.tscn")
+onready var bullet : Resource = singleton.bullet;
 onready var spawnPoint : Position2D = $Position2D
-onready var singleton = get_node("/root/singleton")
+#onready var singleton = get_node("/root/singleton")
 
 #var will_shoot = false
 var client = true
@@ -27,7 +27,7 @@ var flip_on_rotation = true
 func _process(delta):
 	dt = delta
 	timer -=dt;
-	
+#	bullet = singleton.bullet
 	
 	pass # Replace with function body.
 

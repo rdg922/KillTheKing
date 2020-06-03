@@ -3,6 +3,7 @@ extends Control
 
 onready var single = get_node("/root/singleton")
 
+var text;
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -21,7 +22,12 @@ func _on_Server_button_up():
 
 
 func _on_Client_button_up():
-	Network.join_server()
+	Network.join_server(text)
 	
 	pass # Replace with function body.
 
+
+
+func _on_TextEdit_text_changed():
+	text = $TextEdit.text
+	pass # Replace with function body.
